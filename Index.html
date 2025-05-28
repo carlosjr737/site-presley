@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRESLEY - Dance Plus On Stage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Lobster&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+        }
+        .font-display {
+            font-family: 'Bebas Neue', cursive;
+        }
+        .font-script {
+            font-family: 'Lobster', cursive;
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/presley-show-banner.jpg') no-repeat center center;
+            background-size: cover;
+        }
+        .card {
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+        }
+        .btn-gold {
+            background-color: #FFD700;
+            color: #1a1a1a;
+            transition: background-color 0.3s ease;
+        }
+        .btn-gold:hover {
+            background-color: #e6c200;
+        }
+        .section-title {
+            border-bottom: 2px solid #FFD700;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        .team-member img {
+            border: 3px solid #FFD700;
+        }
+
+        .fade-in {
+            animation: fadeInAnimation 1s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInAnimation {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-content {
+            opacity: 0;
+        }
+        .section-content.visible {
+            animation: fadeInAnimation 1s ease-in-out forwards;
+        }
+
+        .dance-plus-logo {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.5rem;
+            color: #FFD700;
+            border: 2px solid #FFD700;
+            padding: 0.25rem 0.5rem;
+            display: inline-block;
+            letter-spacing: 1px;
+        }
+
+        .reels-teaser-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0;
+        }
+        /* CSS para o placeholder/wrapper do vídeo, ajustado para a tag <video> */
+        .reels-video-placeholder {
+            width: 300px; /* Largura desejada para o aspeto de "Reel" */
+            height: 533px; /* Altura correspondente à proporção 9:16 (300 * 16 / 9) */
+            background-color: #000; /* Fundo caso o vídeo demore a carregar ou tenha barras */
+            border: 2px solid #FFD700;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            overflow: hidden; /* Importante para que o vídeo com object-cover não ultrapasse as bordas arredondadas */
+            display: flex; /* Para centralizar o vídeo se ele for menor, embora com w-full/h-full não seja estritamente necessário */
+            justify-content: center;
+            align-items: center;
+        }
+         /* Ajustes responsivos para o placeholder/wrapper do vídeo */
+        @media (max-width: 768px) {
+            .reels-video-placeholder {
+                width: 250px;
+                height: 444px;
+            }
+        }
+         @media (max-width: 480px) {
+            .reels-video-placeholder {
+                width: 80vw; /* Usa a largura da viewport */
+                height: calc(80vw * 16 / 9); /* Mantém a proporção */
+            }
+        }
+
+
+        #geminiLoading {
+            display: none;
+        }
+        #geminiResult {
+            background-color: #252525;
+            border-left: 4px solid #FFD700;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        .input-gemini {
+            background-color: #333;
+            border: 1px solid #555;
+            color: #f0f0f0;
+        }
+        .input-gemini:focus {
+            border-color: #FFD700;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-black/80 backdrop-blur-md sticky top-0 z-50 shadow-lg">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" title="Página Inicial Presley Show">
+                <img src="images/logo-presley.png" alt="Logótipo Presley Dance Plus On Stage" class="h-10 md:h-12">
+            </a>
+            <div class="space-x-2 md:space-x-4">
+                <a href="#sobre" class="text-gray-300 hover:text-white px-2 py-2 md:px-3 rounded-md text-xs md:text-sm font-medium">Sobre</a>
+                <a href="#teaser" class="text-gray-300 hover:text-white px-2 py-2 md:px-3 rounded-md text-xs md:text-sm font-medium">Teaser</a>
+                <a href="#recomendacao" class="text-gray-300 hover:text-white px-2 py-2 md:px-3 rounded-md text-xs md:text-sm font-medium">✨Recomendação</a>
+                <a href="#equipe" class="text-gray-300 hover:text-white px-2 py-2 md:px-3 rounded-md text-xs md:text-sm font-medium">Equipe</a>
+                <a href="#sucesso" class="text-gray-300 hover:text-white px-2 py-2 md:px-3 rounded-md text-xs md:text-sm font-medium">Sucesso Anterior</a>
+                <a href="#contato" class="text-gray-300 hover:text-white px-2 py-2 md:px-3 rounded-md text-xs md:text-sm font-medium">Contato</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero-bg h-screen flex items-center justify-center text-center fade-in">
+        <div class="bg-black/60 p-8 md:p-12 rounded-lg shadow-2xl max-w-3xl mx-auto">
+            <img src="images/logo-presley.png" alt="Logótipo Principal Presley Dance Plus On Stage" class="w-3/4 md:w-2/3 mx-auto mb-6 md:mb-8">
+            <p class="font-script text-3xl md:text-4xl text-yellow-400 mb-6">Dance Plus On Stage</p>
+            <p class="text-lg md:text-xl text-gray-200 mb-8">Um Espetáculo de Dança em Homenagem ao Rei do Rock. Prepare-se para uma noite de muita música, dança e energia!</p>
+            <!-- <a href="#ingressos" class="btn-gold font-bold py-3 px-8 rounded-lg text-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300">Garanta seu Ingresso!</a> -->
+        </div>
+    </section>
+
+    <section id="sobre" class="py-16 md:py-24 bg-gray-900 section-content">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="font-display text-4xl md:text-5xl text-white mb-6 section-title">Sobre o Espetáculo</h2>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-4">
+                "Senhoras e senhores, é com muita alegria que lhes damos as boas-vindas a esse espetáculo que homenageia o Rei do Rock, o inesquecível Elvis Presley!"
+            </p>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-4">
+                Nossos bailarinos irão levá-los em uma viagem pelo tempo, revivendo os movimentos singulares e o som característico de Presley. Esperamos que vocês aproveitem essa experiência única e sejam contagiados pela energia inesgotável do Rei do Rock!
+            </p>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto">
+                Presley - um espetáculo que une gerações e transcende fronteiras! Com sua arte única e incomparável, Elvis Presley conquistou fãs de todas as idades e nacionalidades, e é exatamente isso que buscamos reproduzir em nossa apresentação.
+            </p>
+        </div>
+    </section>
+
+    <section id="teaser" class="py-16 md:py-24 section-content">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="font-display text-4xl md:text-5xl text-white mb-12 section-title">Confira Nosso Teaser!</h2>
+            <div class="reels-teaser-container">
+                <div class="reels-video-placeholder">
+                    <video class="w-full h-full object-cover" controls autoplay loop muted playsinline>
+                        <source src="videos/Presley_Teaser_ReversoFilmes_v2.mp4" type="video/mp4">
+                        O seu navegador não suporta o elemento de vídeo.
+                    </video>
+                </div>
+            </div>
+            <p class="text-lg text-gray-300 mt-8 max-w-2xl mx-auto">
+                Sinta um gostinho da energia e da paixão que esperam por você no nosso espetáculo "PRESLEY"!
+            </p>
+        </div>
+    </section>
+
+    <section id="recomendacao" class="py-16 md:py-24 bg-gray-900 section-content">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="font-display text-4xl md:text-5xl text-white mb-6 section-title">✨ Descubra Porque Este Show é Para Si!</h2>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto mb-8">
+                Diga-nos qual a sua música favorita do Elvis Presley e a nossa inteligência artificial irá criar uma mensagem especial a explicar porque o nosso espetáculo "PRESLEY" é imperdível para si!
+            </p>
+            <div class="max-w-md mx-auto">
+                <div class="mb-4">
+                    <label for="elvisSong" class="block text-yellow-400 text-sm font-bold mb-2">Qual a sua música favorita do Elvis?</label>
+                    <input type="text" id="elvisSong" name="elvisSong" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline input-gemini" placeholder="Ex: Suspicious Minds, Jailhouse Rock...">
+                </div>
+                <button id="getRecommendationBtn" class="btn-gold font-bold py-3 px-6 rounded-lg text-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300">
+                    Obter Recomendação Personalizada ✨
+                </button>
+                <div id="geminiLoading" class="mt-4 text-yellow-400">
+                    A gerar a sua recomendação... Por favor, aguarde.
+                </div>
+                <div id="geminiError" class="mt-4 text-red-500" style="display: none;">
+                    Ocorreu um erro ao gerar a sua recomendação. Por favor, tente novamente.
+                </div>
+                <div id="geminiResult" class="mt-6 text-left text-gray-200" style="display: none;">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="equipe" class="py-16 md:py-24 section-content">
+        <div class="container mx-auto px-6">
+            <h2 class="font-display text-4xl md:text-5xl text-white text-center mb-12 section-title">Nossa Equipe</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card p-6 rounded-lg shadow-xl text-center team-member transform hover:scale-105 transition-transform duration-300">
+                    <img src="images/carlos.JPG" alt="Foto de Carlos Antônio" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="font-bold text-2xl text-yellow-400 mb-2">Carlos Antônio</h3>
+                    <p class="text-sm text-gray-400 mb-1">Direção Geral</p>
+                    <p class="text-gray-300 text-sm">Cofundador da Dance Plus, Jazz Doce Lar, Dance City. Produtor Digital e COO do Dk Studio de Dança. Produziu 4 grandes espetáculos de dança e eventos online de destaque.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-xl text-center team-member transform hover:scale-105 transition-transform duration-300">
+                    <img src="images/marcella.JPG" alt="Foto de Marcella Gozzi" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="font-bold text-2xl text-yellow-400 mb-2">Marcella Gozzi</h3>
+                    <p class="text-sm text-gray-400 mb-1">Direção Artística & Coreógrafa</p>
+                    <p class="text-gray-300 text-sm">Graduada em Ed. Física (PUC-Campinas), MBA em Gestão em Dança. Bailarina Profissional (DRT 0130-2010). Embaixadora Dance Plus. Foco em Jazz Dance, com passagens por Cia Mário Nascimento, Cia Druw e Raça Cia de Dança.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-xl text-center team-member transform hover:scale-105 transition-transform duration-300">
+                    <img src="images/ruan.JPG" alt="Foto de Ruan Lopes" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="font-bold text-2xl text-yellow-400 mb-2">Ruan Lopes</h3>
+                    <p class="text-sm text-gray-400 mb-1">Coreógrafo</p>
+                    <p class="text-gray-300 text-sm">Diretor Artístico e CEO do DK Studio de Dança (BH/MG). Formado em Ed. Física. Produziu IMORTAL (2021) e POTTER (2022). Integrante da RW CREW, com apresentações internacionais.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-xl text-center team-member transform hover:scale-105 transition-transform duration-300 md:col-start-2 lg:col-start-auto">
+                    <img src="images/italo.JPG" alt="Foto de Ítalo Lopes" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="font-bold text-2xl text-yellow-400 mb-2">Ítalo Lopes</h3>
+                    <p class="text-sm text-gray-400 mb-1">Coreógrafo</p>
+                    <p class="text-gray-300 text-sm">Artista de Divinópolis-MG. Estuda Danças Urbanas desde 2000, com influências de Contemporâneo e Jazz. Professor, pesquisador e coreógrafo desde 2013. Participou de festivais como BDC e FIH2.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- 
+    <section id="sucesso" class="py-16 md:py-24 bg-gray-900 section-content">
+        <div class="container mx-auto px-6">
+            <h2 class="font-display text-4xl md:text-5xl text-white text-center mb-12 section-title">Nosso Sucesso Anterior: POTTER</h2>
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/2">
+                    <img src="https://placehold.co/600x400/777/FFD700?text=Show+Potter+Audiência" alt="Imagem do espetáculo Potter" class="rounded-lg shadow-xl w-full">
+                </div>
+                <div class="md:w-1/2 text-center md:text-left">
+                    <p class="text-lg text-gray-300 mb-4">
+                        Em uma homenagem anterior a uma das maiores sagas da indústria do cinema, produzimos um espetáculo em homenagem ao Harry Potter, que esgotou dois dias do Teatro Sesi Minas em 5 horas.
+                    </p>
+                    <p class="text-lg text-gray-300 mb-4">
+                        Além disso, recebemos a audiência de mais de 700 pessoas em uma transmissão ao vivo dentro do nosso app Dance Plus, vindas de diversos lugares do mundo, como Qatar, Coreia, EUA, Canadá, Uruguai e outros.
+                    </p>
+                    <p class="text-md text-gray-400">
+                        Essa magnitude só foi possível graças ao patrocínio do Grupo Orguel e Mandatum Consultoria e ao suporte do Teatro Sesi Minas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="parceiros" class="py-16 section-content">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="font-display text-4xl md:text-5xl text-white mb-12 section-title">Nossos Parceiros</h2>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+                <div class="p-4">
+                    <img src="https://placehold.co/200x100/888/FFD700?text=ORGUEL+(Patrocínio)" alt="Logo Orguel" class="h-16 md:h-20 grayscale hover:grayscale-0 transition-all duration-300">
+                     <p class="text-sm text-gray-400 mt-2">PATROCÍNIO</p>
+                </div>
+                <div class="p-4">
+                     <img src="https://placehold.co/200x100/999/FFD700?text=APOIO" alt="Logo Apoio" class="h-16 md:h-20 grayscale hover:grayscale-0 transition-all duration-300">
+                     <p class="text-sm text-gray-400 mt-2">APOIO</p>
+                </div>
+            </div>
+        </div>
+    </section> -->
+    
+    <section id="ingressos" class="py-16 md:py-24 bg-yellow-400 text-gray-900 section-content">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="font-display text-4xl md:text-5xl mb-6">Não Perca o Rei do Rock no Palco!</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">
+                "Você é fã de Elvis Presley? Ou simplesmente ama música e dança? Então, o espetáculo Presley é para você! Uma produção cuidadosamente planejada que promete emocionar e encantar."
+            </p>
+            <!-- <a href="#" class="bg-gray-900 text-yellow-400 font-bold py-4 px-10 rounded-lg text-xl hover:bg-gray-800 transition-colors duration-300 shadow-lg transform hover:scale-105">COMPRAR INGRESSOS AGORA</a> -->
+            <p class="mt-4 text-sm">Datas e locais a serem anunciados em breve!</p>
+        </div>
+    </section>
+
+    <footer id="contato" class="py-16 bg-black text-white section-content">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="font-display text-3xl md:text-4xl mb-8 section-title">Entre em Contato</h2>
+            <div class="dance-plus-logo mb-4">DANCE PLUS</div>
+            <p class="text-lg mb-2">Carlos Antônio - Diretor Executivo</p>
+            <p class="text-lg mb-2">
+                <a href="tel:+5531992007826" class="hover:text-yellow-400">Tel/Wpp: (31) 9 9200-7826</a>
+            </p>
+            <p class="text-lg mb-6">
+                <a href="mailto:carlos@dkonline.app" class="hover:text-yellow-400">carlos@dkonline.app</a>
+            </p>
+            <div class="mt-8">
+                <p class="text-sm text-gray-500">&copy; <span id="currentYear"></span> PRESLEY - Dance Plus On Stage. Todos os direitos reservados.</p>
+                <p class="text-xs text-gray-600">Design inspirado por um fã do Rei.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const sections = document.querySelectorAll('.section-content');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1 
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        const getRecommendationBtn = document.getElementById('getRecommendationBtn');
+        const elvisSongInput = document.getElementById('elvisSong');
+        const geminiLoading = document.getElementById('geminiLoading');
+        const geminiResultDiv = document.getElementById('geminiResult');
+        const geminiErrorDiv = document.getElementById('geminiError');
+
+        getRecommendationBtn.addEventListener('click', async () => {
+            const song = elvisSongInput.value.trim();
+            if (!song) {
+                geminiErrorDiv.textContent = "Por favor, insira a sua música favorita do Elvis.";
+                geminiErrorDiv.style.display = 'block';
+                geminiResultDiv.style.display = 'none';
+                return;
+            }
+
+            geminiLoading.style.display = 'block';
+            geminiResultDiv.style.display = 'none';
+            geminiErrorDiv.style.display = 'none';
+
+            const prompt = `A minha música favorita do Elvis Presley é "${song}". Baseado nisto, cria um pequeno texto entusiasta e convidativo (máximo 3 parágrafos curtos) a explicar porque é que eu, como fã desta música, iria adorar o espetáculo de dança "PRESLEY" que homenageia o Rei do Rock. O espetáculo promete muita música, dança e energia, revivendo os movimentos singulares e o som característico de Presley. Evita usar a primeira pessoa (eu, nós) na resposta, fala diretamente para o fã.`;
+
+            try {
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    let errorDetails = `HTTP error! status: ${response.status}`;
+                    try {
+                        const errorData = await response.json();
+                        errorDetails += ` - ${errorData.error?.message || 'Detalhes não disponíveis'}`;
+                    } catch (e) { /* Ignora se não conseguir parsear o JSON do erro */ }
+                    throw new Error(errorDetails);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    geminiResultDiv.textContent = text;
+                    geminiResultDiv.style.display = 'block';
+                } else {
+                    console.error("Resposta da API Gemini inesperada:", result);
+                    throw new Error("Não foi possível obter uma recomendação. A resposta da API não continha o texto esperado.");
+                }
+
+            } catch (error) {
+                console.error('Erro ao chamar a API Gemini:', error);
+                geminiErrorDiv.textContent = `Ocorreu um erro: ${error.message}. Por favor, tente novamente.`;
+                geminiErrorDiv.style.display = 'block';
+            } finally {
+                geminiLoading.style.display = 'none';
+            }
+        });
+
+    </script>
+    </body>
+</html>
